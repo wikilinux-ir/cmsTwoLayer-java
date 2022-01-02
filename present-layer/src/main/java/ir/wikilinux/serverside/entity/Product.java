@@ -1,19 +1,19 @@
 package ir.wikilinux.serverside.entity;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable{
 
 	private int id;
-	private long price;
 	private String name;
+	private int price;
 	private int count;
 	
 	
-	
-	
-	public Product(int id, long price, String name, int count) {
+	public Product(int id, String name, int price, int count) {
 		this.id = id;
-		this.price = price;
 		this.name = name;
+		this.price = price;
 		this.count = count;
 	}
 	
@@ -26,20 +26,20 @@ public class Product {
 		this.id = id;
 	}
 	
-	public long getPrice() {
-		return price;
-	}
-	
-	public void setPrice(long price) {
-		this.price = price;
-	}
-	
 	public String getName() {
 		return name;
 	}
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public int getPrice() {
+		return price;
+	}
+	
+	public void setPrice(int price) {
+		this.price = price;
 	}
 	
 	public int getCount() {
@@ -49,6 +49,5 @@ public class Product {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
 	
 }
