@@ -2,7 +2,7 @@ package ir.wikilinux.serverside.entity;
 
 import java.io.Serializable;
 
-public class Product implements Serializable{
+public class Product implements Serializable {
 
 	private int id;
 	private String name;

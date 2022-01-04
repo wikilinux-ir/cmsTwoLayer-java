@@ -2,6 +2,7 @@ package ir.wikilinux.serverside.bz;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import ir.wikilinux.serverside.entity.Product;
@@ -17,6 +18,9 @@ public interface ProductServices extends Remote{
 	Product getProduct(int id) throws RemoteException;
 	
 	List<Product> findWithName(String name) throws RemoteException;
+	
+	List<Product> getAllProducts() throws RemoteException;
+
 	
 	int deleteProduct(int id) throws RemoteException;
 

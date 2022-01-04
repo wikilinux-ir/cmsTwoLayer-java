@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 import ir.wikilinux.serverside.entity.Product;
 
@@ -17,7 +18,7 @@ public class ProductDaoImplMysql implements ProductDao{
 	private final int Err = 0;
 
 	@Override
-	public int changeProductPrice(int id,int newPrice) throws RemoteException {
+	public int changeProductPrice(int id,int newPrice)  {
 
 		if (connection == null)
 		{
@@ -37,7 +38,7 @@ public class ProductDaoImplMysql implements ProductDao{
 	}
 
 	@Override
-	public int changeProductName(int id,String newName) throws RemoteException {
+	public int changeProductName(int id,String newName)  {
 
 		if (connection == null)
 		{
@@ -59,7 +60,7 @@ public class ProductDaoImplMysql implements ProductDao{
 	
 
 	@Override
-	public int createProduct(Product product) throws RemoteException {
+	public int createProduct(Product product)  {
 
 		if (product == null || connection == null) 
 		{
@@ -88,7 +89,7 @@ public class ProductDaoImplMysql implements ProductDao{
 	}
 
 	@Override
-	public Product getProduct(int id) throws RemoteException {
+	public Product getProduct(int id)  {
 		
 		if (connection == null)
 		{
@@ -119,7 +120,7 @@ public class ProductDaoImplMysql implements ProductDao{
 	}
 
 	@Override
-	public ArrayList<Product> findWithName(String name) throws RemoteException {
+	public ArrayList<Product> findWithName(String name)  {
 		
 		if (connection == null)
 		{
@@ -153,7 +154,7 @@ public class ProductDaoImplMysql implements ProductDao{
 	}
 
 	@Override
-	public int deleteProduct(int id) throws RemoteException {
+	public int deleteProduct(int id)  {
 
 		if ( connection == null) 
 		{
@@ -173,5 +174,46 @@ public class ProductDaoImplMysql implements ProductDao{
 	
 	
 	
+	
+	
+	public List<Product> getAllProduct() 
+	{
+	
+		
+		if (connection == null)
+		{
+			return null;
+		}
+		try(PreparedStatement ps = connection.prepareStatement("select * from products");) {
+			
+			
+			ResultSet rs = ps.executeQuery();
+			List<Product>  products= new ArrayList<>();
+			Product product = null;
+			while(rs.next())
+			{
+				int productId = rs.getInt("product_id");
+				int price = rs.getInt("price");
+				int count= rs.getInt("count");
+				String nameDb = rs.getString("name");
+				product = new Product(productId, nameDb, price, count);
+				products.add(product);
+			}
+			
+			return products;
 
-}
+		} catch (Exception e) {
+			
+				System.out.println(e.getMessage());
+		}
+		return null;
+	
+	}
+	}
+	
+	
+	
+	
+	
+
+

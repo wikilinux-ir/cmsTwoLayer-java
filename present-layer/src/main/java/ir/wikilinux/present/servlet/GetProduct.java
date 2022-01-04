@@ -35,7 +35,7 @@ public class GetProduct extends HttpServlet{
 			Registry registry = LocateRegistry.getRegistry(ServerInformation.HOSTNAME, ServerInformation.PORT);
 			out.write(2);
 
-			ProductServices productServices;
+			ProductServices productServices = null;
 			try {
 				productServices = (ProductServices) registry.lookup(ServerInformation.MODEL);
 				out.write(3);

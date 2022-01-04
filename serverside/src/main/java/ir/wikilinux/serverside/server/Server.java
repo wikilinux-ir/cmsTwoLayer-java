@@ -16,7 +16,7 @@ public class Server {
 
 		ProductServices services = new ProductServicesImpl();
 		
-		Registry registry = LocateRegistry.createRegistry(2001);
+		Registry registry = LocateRegistry.createRegistry(2003);
 		
 		registry.rebind("products", services);
 		

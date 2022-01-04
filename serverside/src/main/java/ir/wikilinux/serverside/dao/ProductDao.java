@@ -5,20 +5,23 @@ import java.util.*;
 
 import ir.wikilinux.serverside.entity.Product;
 
-public interface ProductDao extends Remote{
+public interface ProductDao {
 	
 	
 	
-	int changeProductPrice(int id , int newPrice) throws RemoteException;
+	int changeProductPrice(int id , int newPrice) ;
 	
-	int changeProductName(int id,String newName) throws RemoteException;
+	int changeProductName(int id,String newName) ;
 	
-	int createProduct(Product product) throws RemoteException;
+	int createProduct(Product product) ;
 	
-	Product getProduct(int id) throws RemoteException;
+	Product getProduct(int id) ;
 	
-	List<Product> findWithName(String name) throws RemoteException;
+	List<Product> findWithName(String name) ;
+
+	List<Product> getAllProduct() ;
+
 	
-	int deleteProduct(int id) throws RemoteException;
+	int deleteProduct(int id) ;
 
 }
