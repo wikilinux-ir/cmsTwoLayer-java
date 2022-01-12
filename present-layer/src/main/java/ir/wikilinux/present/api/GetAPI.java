@@ -18,14 +18,22 @@ public class GetAPI {
 		
 		PrintWriter out = resp.getWriter();
 		Gson gson = new Gson();
-		
+		int id = 0;
 		if (!req.getParameterMap().containsKey("id") || req.getParameterMap().get("id").equals(""))
 		{
 			resp.setStatus(400);
-			out.println("{\"status\" : \"400 Bad Request\" }");
+			out.println("{\"status\" : \"400 Bad Request\" ,  \"detail\" : \" The ID has not been entered or is empty \" }");
+			return;
 		}
 		
-		int id = Integer.parseInt(req.getParameter("id"));
+		try {
+			 id = Integer.parseInt(req.getParameter("id"));
+		} catch (NumberFormatException e) {
+			resp.setStatus(400);
+			out.println("{\"status\" : \"400 Bad Request\", \"detail\" : \" The ID must be numeric \" }");
+			return;
+		}
+		
 		
 		ProductServices productServices = RmiConnection.getInstance();
 		
