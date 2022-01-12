@@ -1,6 +1,5 @@
 package ir.wikilinux.serverside.dao;
 
-import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -83,9 +82,8 @@ public class ProductDaoImplMysql implements ProductDao{
 		} catch (Exception e) {
 			
 				System.out.println(e.getMessage());
+				return 11;
 		}
-		
-		return Err;
 	}
 
 	@Override
@@ -176,6 +174,7 @@ public class ProductDaoImplMysql implements ProductDao{
 	
 	
 	
+	@Override
 	public List<Product> getAllProduct() 
 	{
 	

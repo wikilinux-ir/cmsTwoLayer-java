@@ -14,7 +14,7 @@ import ir.wikilinux.serverside.entity.Product;
 
 public class GetAPI {
 
-	public static void GetAPI(HttpServletRequest req,HttpServletResponse resp) throws IOException {
+	public static void Get(HttpServletRequest req,HttpServletResponse resp) throws IOException {
 		
 		PrintWriter out = resp.getWriter();
 		Gson gson = new Gson();

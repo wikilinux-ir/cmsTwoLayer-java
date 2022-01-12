@@ -118,19 +118,21 @@ public class PostAPI {
 	}
 	
 	
-	public void registerProduct(Product product)
+	public int registerProduct(Product product)
 	{
 		
 		ProductServices productServices = RmiConnection.getInstance();
-		
+		int result = 0;
 		try {
 			
-			productServices.createProduct(product);
+			result =  productServices.createProduct(product);
 			
 		} catch (RemoteException e) {
 			
 			e.printStackTrace();
 		}
+		
+		return result;
 	}
 
 }

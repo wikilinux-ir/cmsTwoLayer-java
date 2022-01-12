@@ -18,7 +18,7 @@ public class EndPoint extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		
-		GetAPI.GetAPI(req, resp);
+		GetAPI.Get(req, resp);
 		
 		
 	}
@@ -36,9 +36,14 @@ public class EndPoint extends HttpServlet{
 		if (product != null) 
 		{
 			
-			postAPI.registerProduct(product);
-			resp.setStatus(201);
-			resp.getWriter().println("{\"status\" : 201 }");
+			int result = postAPI.registerProduct(product);
+			if (result == 11) {
+				resp.setStatus(409);
+				resp.getWriter().println("{\"status\" : 409 \n \"detail\" : \" this product id is duplicate\" }");
+			}else {
+				resp.setStatus(201);
+				resp.getWriter().println("{\"status\" : 201 }");
+			}
 		}
 		else 
 		{
