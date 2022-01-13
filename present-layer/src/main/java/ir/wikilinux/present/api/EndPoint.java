@@ -87,7 +87,7 @@ public class EndPoint extends HttpServlet{
 		if (product != null) 
 		{
 		
-			/* if all fields ok register product to DB and give a result code
+			/* if all fields ok register product to DB and give a result code 
 			*  if result code equal 11 , it means that the product ID is duplicate
 			*/
 			
@@ -114,7 +114,60 @@ public class EndPoint extends HttpServlet{
 			
 			return;
 		}
-	
 		
+	}
+	
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		PostAPI postAPI = new PostAPI();
+		
+		
+		// get json posted to server
+		
+		String jsonString = postAPI.GetBody(req, resp);
+		
+		String token = APIUtils.getTokenString(req,resp,jsonString);
+		
+		
+		// Set Content type 
+		resp.setContentType(CONTENT_TYPE_JSON);
+
+		/* 
+		 * validate to set token or not
+		 * if not set or null return from servlet
+		 */
+		if(token == null || !JWTValidator.validator(token) ||token.equals("") ) 
+		{
+			resp.setStatus(HttpStatusCodes.UNAUTHORIZED);
+			resp.getWriter().println("{\n\"status\" : 401,"
+					+ "\n \"detail\" : \" 401 Unauthorized\"}");
+			return;
+		}
+		
+		
+		Product product = postAPI.validator(jsonString, resp.getWriter());
+
+		if (product == null) {
+			
+
+				resp.setStatus(HttpStatusCodes.BAD_REQUEST);
+				resp.getWriter().println("{\"status\" : 400,"
+						+ "\"detail\": \" One or more fields are empty or incorrect\n"
+						+ "\n"
+						+ " \" }");
+				
+				return;
+			
+		}
+
+		int result =  PutAPI.registerProduct(product);
+
+		if (result > 0) {
+			
+			resp.setStatus(HttpStatusCodes.ACCEPTED);
+			resp.getWriter().println("{\n\"status\" : 202,"
+					+ "\n \"detail\" : \" ACCEPTED\"}");
+		}
 	}
 }

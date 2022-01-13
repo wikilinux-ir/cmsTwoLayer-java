@@ -13,15 +13,15 @@ public class ProductDaoImplMysql implements ProductDao{
 	
 	private final Connection connection = ConnectionBuilder.getConnection();
 	
-	private final int IsNull = 10;
-	private final int Err = 0;
+	private final int IS_NULL = -1;
+	private final int ERROR = 0;
 
 	@Override
 	public int changeProductPrice(int id,int newPrice)  {
 
 		if (connection == null)
 		{
-			return IsNull;
+			return IS_NULL;
 		}
 		try(PreparedStatement ps = connection.prepareStatement("update products set price=? where id=?");) {
 			
@@ -33,7 +33,7 @@ public class ProductDaoImplMysql implements ProductDao{
 			
 				System.out.println(e.getMessage());
 		}
-		return Err;
+		return ERROR;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class ProductDaoImplMysql implements ProductDao{
 
 		if (connection == null)
 		{
-			return IsNull;
+			return IS_NULL;
 		}
 		try(PreparedStatement ps = connection.prepareStatement("update products set name=? where id=?");) {
 			
@@ -53,7 +53,7 @@ public class ProductDaoImplMysql implements ProductDao{
 			
 				System.out.println(e.getMessage());
 		}
-		return Err;
+		return ERROR;
 	}
 		
 	
@@ -63,7 +63,7 @@ public class ProductDaoImplMysql implements ProductDao{
 
 		if (product == null || connection == null) 
 		{
-			return IsNull;
+			return IS_NULL;
 		}
 		
 		int productId = product.getId();
@@ -156,7 +156,7 @@ public class ProductDaoImplMysql implements ProductDao{
 
 		if ( connection == null) 
 		{
-			return IsNull;
+			return IS_NULL;
 		}
 		try(PreparedStatement ps = connection.prepareStatement("DELETE FROM products WHERE product_id = ?");) {
 			
@@ -167,7 +167,7 @@ public class ProductDaoImplMysql implements ProductDao{
 			
 				System.out.println(e.getMessage());
 		}
-		return Err;		
+		return ERROR;		
 	}
 	
 	
@@ -183,7 +183,7 @@ public class ProductDaoImplMysql implements ProductDao{
 		{
 			return null;
 		}
-		try(PreparedStatement ps = connection.prepareStatement("select * from products");) {
+		try(PreparedStatement ps = connection.prepareStatement("select * from products order by product_id asc");) {
 			
 			
 			ResultSet rs = ps.executeQuery();
@@ -208,6 +208,73 @@ public class ProductDaoImplMysql implements ProductDao{
 		return null;
 	
 	}
+	
+	@Override
+	public int updateAllProperties(int id , String name , int price , int count)
+	{
+	
+
+		if (connection == null)
+		{
+			return IS_NULL;
+		}
+
+		Product product = getProduct(id);
+		
+		int success = 0;
+		
+		if (product == null)
+		{
+			
+			product = new Product(id, name, price, count);
+			success = createProduct(product);
+			
+			return success;
+		}else 
+		{
+			try(PreparedStatement ps = connection.prepareStatement("UPDATE products SET name = ? , price = ? , count = ? WHERE product_id = ?");) {
+				
+				ps.setString(1,name);
+				ps.setInt(2, price);
+				ps.setInt(3, count);
+				ps.setInt(4, id);
+				success = ps.executeUpdate();
+				return success;
+			} catch (Exception e) {
+				
+					System.out.println(e.getMessage());
+			}
+		}
+
+		return 0;
+		
+	}
+	
+
+	@Override
+	public int updateCount(int id,int count) {
+
+		
+		if (connection == null)
+		{
+			return IS_NULL;
+		}
+		
+		try(PreparedStatement ps = connection.prepareStatement("UPDATE products SET  count = ? WHERE product_id = ?");) {
+			
+			ps.setInt(1, count);
+			ps.setInt(2, id);
+			int success = ps.executeUpdate();
+			return success;
+		} catch (Exception e) {
+			
+				System.out.println(e.getMessage());
+		}
+		
+		return ERROR;
+	}
+	
+	
 	}
 	
 	

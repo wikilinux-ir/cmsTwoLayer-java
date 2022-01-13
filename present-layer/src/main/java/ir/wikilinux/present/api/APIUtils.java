@@ -55,6 +55,9 @@ public class APIUtils {
 			// for delete quotation from first and last 
 			token = getToPostMethodToken(json).replaceAll("\"", "");
 			break;
+		case "PUT":
+			// for delete quotation from first and last 
+			token = getToPostMethodToken(json).replaceAll("\"", "");
 		}
 		
 	

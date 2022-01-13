@@ -3,10 +3,10 @@ package ir.wikilinux.serverside.bz;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.List;
 
-import ir.wikilinux.serverside.dao.*;
+import ir.wikilinux.serverside.dao.ProductDao;
+import ir.wikilinux.serverside.dao.ProductDaoImplMysql;
 import ir.wikilinux.serverside.entity.Product;
 
 public class ProductServicesImpl extends UnicastRemoteObject implements ProductServices,Serializable{
@@ -55,8 +55,22 @@ public class ProductServicesImpl extends UnicastRemoteObject implements ProductS
 		return dao.deleteProduct(id);
 	}
 
+	@Override
 	public List<Product> getAllProducts(){
 		
 		return dao.getAllProduct();
+	}
+	
+	@Override
+	public int updateAllProperties(int id , String name , 	int price , int count) {
+		
+		System.out.println(id);
+
+		return dao.updateAllProperties(id, name, price, count);
+	}
+	@Override
+	public int updateCount(int id,int count) {
+		
+		return dao.updateCount(id, count);
 	}
 }

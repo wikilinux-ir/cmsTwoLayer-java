@@ -1,7 +1,6 @@
 package ir.wikilinux.serverside.dao;
 
-import java.rmi.*;
-import java.util.*;
+import java.util.List;
 
 import ir.wikilinux.serverside.entity.Product;
 
@@ -21,6 +20,9 @@ public interface ProductDao {
 
 	List<Product> getAllProduct() ;
 
+	int updateAllProperties(int id , String name , 	int price , int count);
+	
+	int updateCount(int id,int count);
 	
 	int deleteProduct(int id) ;
 

@@ -2,6 +2,7 @@ package ir.wikilinux.present.api;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,43 +23,55 @@ public class GetAPI {
 		resp.setContentType(EndPoint.CONTENT_TYPE_JSON);
 		if (!req.getParameterMap().containsKey("id") || req.getParameterMap().get("id").equals(""))
 		{
-			resp.setStatus(400);
+			resp.setStatus(HttpStatusCodes.BAD_REQUEST);
 			out.println("{\"status\" : \"400 Bad Request\" ,  \"detail\" : \" The ID has not been entered or is empty \" }");
-			return;
+			return; 
 		}
 		
 		try { 
 			 id = Integer.parseInt(req.getParameter("id"));
 		} catch (NumberFormatException e) {
-			resp.setStatus(400);
+			resp.setStatus(HttpStatusCodes.BAD_REQUEST);
 			out.println("{\"status\" : \"400 Bad Request\", \"detail\" : \" The ID must be numeric \" }");
 			return;
 		}
 		
-		
+		String productJsonString = null;
 		ProductServices productServices = RmiConnection.getInstance();
-		
-		Product product = productServices.getProduct(id);
-		
-		if (product == null) {
+		Product product = null ;
+		resp.setStatus(HttpStatusCodes.OK);
+		resp.setContentType("application/json");
 
-			resp.setStatus(404);
-			out.println("{\"status\" : 404 Not Found}");
-			return;
 
+		if (id > 0) {
+			
+			 product = productServices.getProduct(id);
+			
+			 //check product exist if product equals null , product not exist
+			if (product == null) {
+
+				resp.setStatus(HttpStatusCodes.NOT_FOUND);
+				out.println("{\"status\" : \"404 Not Found\"}");
+				return;
+
+			}
+			
+			JsonElement element = gson.toJsonTree(product);
+			element.getAsJsonObject().addProperty("status", HttpStatusCodes.OK);
+			
+			productJsonString = gson.toJson(element) ;
+		}
+		else {
+			
+			List<Product> products = productServices.getAllProducts();
+			
+			productJsonString = gson.toJson(products);
 		}
 		
-		resp.setStatus(200);
+	
 
 		
-		JsonElement element = gson.toJsonTree(product);
-		element.getAsJsonObject().addProperty("status", 200);
-		
-		String productJson = gson.toJson(element) ;
-
-		resp.setContentType("application/json");
-		
-		out.println(productJson);
+		out.println(productJsonString);
 	}
 	
 }
