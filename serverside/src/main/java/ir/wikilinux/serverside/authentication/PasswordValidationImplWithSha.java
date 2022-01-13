@@ -43,7 +43,7 @@ public class PasswordValidationImplWithSha extends UnicastRemoteObject implement
 		
 		boolean isValid = false;
 		
-		Base64.Encoder encoderToStingByte = Base64.getEncoder();
+		Base64.Encoder encoderToStringByte = Base64.getEncoder();
 		try {
 			MessageDigest md = MessageDigest.getInstance(ALG);
 			
@@ -54,7 +54,7 @@ public class PasswordValidationImplWithSha extends UnicastRemoteObject implement
 			// get hashed password byte and convert to string understand byte to convert byte to string
 			
 			byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
-			byte[] encoded = encoderToStingByte.encode(hashedPassword);
+			byte[] encoded = encoderToStringByte.encode(hashedPassword);
 
 			if (dbHash.equals(new String(encoded))) {
 				

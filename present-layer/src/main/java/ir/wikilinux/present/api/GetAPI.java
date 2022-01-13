@@ -19,6 +19,7 @@ public class GetAPI {
 		PrintWriter out = resp.getWriter();
 		Gson gson = new Gson();
 		int id = 0;
+		resp.setContentType(EndPoint.CONTENT_TYPE_JSON);
 		if (!req.getParameterMap().containsKey("id") || req.getParameterMap().get("id").equals(""))
 		{
 			resp.setStatus(400);
@@ -26,7 +27,7 @@ public class GetAPI {
 			return;
 		}
 		
-		try {
+		try { 
 			 id = Integer.parseInt(req.getParameter("id"));
 		} catch (NumberFormatException e) {
 			resp.setStatus(400);
