@@ -49,15 +49,14 @@ public class APIUtils {
 		String token = null;
 		switch (request.getMethod()) {
 		case "GET":
+		case "DELETE":
 			token=getToGetMethodToken(request);
 			break;
 		case "POST":
-			// for delete quotation from first and last 
-			token = getToPostMethodToken(json).replaceAll("\"", "");
-			break;
 		case "PUT":
 			// for delete quotation from first and last 
 			token = getToPostMethodToken(json).replaceAll("\"", "");
+			break;
 		}
 		
 	

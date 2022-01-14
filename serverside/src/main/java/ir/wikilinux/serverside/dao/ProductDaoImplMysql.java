@@ -246,7 +246,7 @@ public class ProductDaoImplMysql implements ProductDao{
 			}
 		}
 
-		return 0;
+		return ERROR;
 		
 	}
 	

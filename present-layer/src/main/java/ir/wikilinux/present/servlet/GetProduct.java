@@ -2,8 +2,10 @@ package ir.wikilinux.present.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.rmi.*;
-import java.rmi.registry.*;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -23,6 +25,7 @@ public class GetProduct extends HttpServlet{
 
 	/*just for test rmi connection*/
 	
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 			

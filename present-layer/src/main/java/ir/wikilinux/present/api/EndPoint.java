@@ -15,8 +15,12 @@ import ir.wikilinux.serverside.entity.Product;
 public class EndPoint extends HttpServlet{
 	
 	
-	public static final  String CONTENT_TYPE_JSON = "application/json";
-	 static final String JWT_FIELD_NAME = "token";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5179979584530912267L;
+	public static final String CONTENT_TYPE_JSON = "application/json";
+	public static final String JWT_FIELD_NAME = "token";
 	
 
 	
@@ -24,6 +28,7 @@ public class EndPoint extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String token = APIUtils.getTokenString(req,resp,null);
+		resp.setCharacterEncoding("UTF-8");
 		
 		/* 
 		 * validate to set token or not
@@ -40,7 +45,7 @@ public class EndPoint extends HttpServlet{
 			return;
 		}
 
-			GetAPI.Get(req, resp);
+		GetAPI.Get(req, resp);
 
 		
 		
@@ -64,7 +69,7 @@ public class EndPoint extends HttpServlet{
 		
 		// Set Content type 
 		resp.setContentType(CONTENT_TYPE_JSON);
-
+		resp.setCharacterEncoding("UTF-8");
 		/* 
 		 * validate to set token or not
 		 * if not set or null return from servlet
@@ -132,6 +137,7 @@ public class EndPoint extends HttpServlet{
 		
 		// Set Content type 
 		resp.setContentType(CONTENT_TYPE_JSON);
+		resp.setCharacterEncoding("UTF-8");
 
 		/* 
 		 * validate to set token or not
@@ -170,4 +176,69 @@ public class EndPoint extends HttpServlet{
 					+ "\n \"detail\" : \" ACCEPTED\"}");
 		}
 	}
+	
+	
+	
+	
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		String token = APIUtils.getTokenString(req, resp, null);
+	
+		resp.setCharacterEncoding("UTF-8");
+		
+		/* 
+		 * validate to set token or not
+		 * if not set or null return from servlet
+		 */
+		resp.setContentType(CONTENT_TYPE_JSON);
+
+		
+		if(token == null || !JWTValidator.validator(token) ||token.equals("") ) 
+		{
+			resp.setStatus(HttpStatusCodes.UNAUTHORIZED);
+			resp.getWriter().println("{\n\"status\" : 401,"
+					+ "\n \"detail\" : \" 401 Unauthorized\"}");
+			return;
+		}
+		
+		int result = DeleteAPI.delete(req,resp);
+		resp.getWriter().println(result);
+
+		if (result > 0) {
+			
+			resp.setStatus(HttpStatusCodes.ACCEPTED);
+			resp.getWriter().println("{\n\"status\" : 202,"
+					+ "\n \"detail\" : \" 202 Accepted , product deleted\","
+					+ "\"Deleted items \" :"
+					+ result +
+					" }");
+			return;
+		} else if (result < 0) 
+		{
+			resp.setStatus(HttpStatusCodes.BAD_REQUEST);
+			resp.getWriter().println("{\"status\" : 400," 
+					+ "\"detail\": \" One or more fields are empty or incorrect\n"
+					+ "\n"
+					+ " \" }"); 
+			
+			return;
+		} else {
+			resp.setStatus(HttpStatusCodes.NOT_FOUND);
+			resp.getWriter().println("{\"status\" : \"404 Not Found\"}");
+
+			
+			return;
+		}
+		
+		
+	
+	}
 }
+
+
+
+
+
+
+
