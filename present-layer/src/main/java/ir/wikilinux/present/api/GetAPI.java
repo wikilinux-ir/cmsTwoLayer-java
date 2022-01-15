@@ -19,7 +19,7 @@ public class GetAPI {
 		
 		PrintWriter out = resp.getWriter();
 		Gson gson = new Gson();
-		int id = 0;
+		int id = 0; 
 		resp.setContentType(EndPoint.CONTENT_TYPE_JSON);
 		if (!req.getParameterMap().containsKey("id") || req.getParameterMap().get("id").equals(""))
 		{

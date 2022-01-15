@@ -13,6 +13,10 @@ import ir.wikilinux.serverside.bz.ProductServices;
 public class DeleteAPI {
 
 	
+	
+	// all errors return -1
+	
+	
 	public static int delete(HttpServletRequest req,HttpServletResponse resp) throws IOException {
 		
 		PrintWriter out = resp.getWriter();
@@ -29,13 +33,6 @@ public class DeleteAPI {
 			
 		int id = getId(req);
 		
-//		if (id <= 0 ) {
-//			
-//			resp.setStatus(HttpStatusCodes.BAD_REQUEST);
-//			out.println("{\"status\" : \"400 Bad Request\", \"detail\" : \" The ID must be numeric \" }");
-//			return -1;
-//		}
-//		
 	
 		ProductServices productServices = RmiConnection.getInstance();
 		
@@ -44,7 +41,7 @@ public class DeleteAPI {
 	}
 	
 
-
+// check to exists field in query
 
 	public static boolean doExistFeild(String fieldName,HttpServletRequest request) {
 		
@@ -57,6 +54,7 @@ public class DeleteAPI {
 	}
 
 	
+	// if id not numeric return -1
 	
 	public static int getId(HttpServletRequest request) {
 		
@@ -72,8 +70,13 @@ public class DeleteAPI {
 		return id;
 		
 	}
+	
+	
+	
 
-
+	
+	
+	
 }
 
 

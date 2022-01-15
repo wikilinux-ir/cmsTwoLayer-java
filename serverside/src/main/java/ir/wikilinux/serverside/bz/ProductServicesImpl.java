@@ -64,7 +64,6 @@ public class ProductServicesImpl extends UnicastRemoteObject implements ProductS
 	@Override
 	public int updateAllProperties(int id , String name , 	int price , int count) {
 		
-		System.out.println(id);
 
 		return dao.updateAllProperties(id, name, price, count);
 	}

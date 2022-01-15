@@ -3,6 +3,8 @@ package ir.wikilinux.serverside.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class ProductDaoImplMysql implements ProductDao{
 	
 	private final int IS_NULL = -1;
 	private final int ERROR = 0;
+	private final int DUPLICATE = 11;
 
 	@Override
 	public int changeProductPrice(int id,int newPrice)  {
@@ -79,10 +82,14 @@ public class ProductDaoImplMysql implements ProductDao{
 			ps.setInt(4, count);
 			int success = ps.executeUpdate();
 			return success;
-		} catch (Exception e) {
+		} catch (SQLIntegrityConstraintViolationException e) {
 			
-				System.out.println(e.getMessage());
-				return 11;
+			System.out.println(e.getMessage());
+			return DUPLICATE;
+				
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			return ERROR;
 		}
 	}
 

@@ -44,6 +44,17 @@ public class EndPoint extends HttpServlet{
 					+ "\n \"detail\" : \" 401 Unauthorized\"}");
 			return;
 		}
+		
+	// Check to have permission to get
+		
+		if (!APIUtils.havePermission(token,"user")) {
+			
+			resp.setStatus(HttpStatusCodes.FORBIDDEN);
+			resp.getWriter().println("{\n\"status\" : 403,"
+					+ "\n \"detail\" : \" 403  You don't have permission for this\"}");
+			return;
+		}
+		
 
 		GetAPI.Get(req, resp);
 
@@ -83,11 +94,23 @@ public class EndPoint extends HttpServlet{
 			return;
 		}
 		
+		
+	// Check to have permission to delete
+		
+		if (!APIUtils.havePermission(token,"admin")) {
+			
+			resp.setStatus(HttpStatusCodes.FORBIDDEN);
+			resp.getWriter().println("{\n\"status\" : 403,"
+					+ "\n \"detail\" : \" 403  You don't have permission for this\"}");
+			return;
+		}
+		
+		
 		/*
 		 * if set token and valid token check to set all field for create product? If all fields are set return product
 		 * */
 		
-		Product product = postAPI.validator(jsonString, resp.getWriter());
+		Product product = APIUtils.jsonFieldValidator(jsonString);
 		
 		if (product != null) 
 		{
@@ -151,8 +174,18 @@ public class EndPoint extends HttpServlet{
 			return;
 		}
 		
+	// Check to have permission to delete
 		
-		Product product = postAPI.validator(jsonString, resp.getWriter());
+		if (!APIUtils.havePermission(token,"admin")) {
+			
+			resp.setStatus(HttpStatusCodes.FORBIDDEN);
+			resp.getWriter().println("{\n\"status\" : 403,"
+					+ "\n \"detail\" : \" 403  You don't have permission for this\"}");
+			return;
+		}
+		
+		
+		Product product = APIUtils.jsonFieldValidator(jsonString);
 
 		if (product == null) {
 			
@@ -202,6 +235,19 @@ public class EndPoint extends HttpServlet{
 			return;
 		}
 		
+		// Check to have permission to delete
+		
+		if (!APIUtils.havePermission(token,"admin")) {
+			
+			resp.setStatus(HttpStatusCodes.FORBIDDEN);
+			resp.getWriter().println("{\n\"status\" : 403,"
+					+ "\n \"detail\" : \" 403  You don't have permission for this\"}");
+			return;
+		}
+		
+		
+	
+		
 		int result = DeleteAPI.delete(req,resp);
 		resp.getWriter().println(result);
 
@@ -214,6 +260,9 @@ public class EndPoint extends HttpServlet{
 					+ result +
 					" }");
 			return;
+			
+			
+			// if field not entry return 400 
 		} else if (result < 0) 
 		{
 			resp.setStatus(HttpStatusCodes.BAD_REQUEST);
@@ -223,6 +272,10 @@ public class EndPoint extends HttpServlet{
 					+ " \" }"); 
 			
 			return;
+			
+			
+			// if id < 0 
+			
 		} else {
 			resp.setStatus(HttpStatusCodes.NOT_FOUND);
 			resp.getWriter().println("{\"status\" : \"404 Not Found\"}");
